@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ TIMER_MINUTES: 15 });
 });
@@ -11,23 +13,30 @@ const getTimer = (sendResponse) => {
     const timeLeft = result.TIMER_MINUTES - timeElapsed;
     sendResponse(timeLeft > 0 ? timeLeft : 0);
   });
-  return true;
+};
+
+const setStorageItem = (message) => {
+  const { key, value } = message.params;
+  chrome.storage.local.set({ [key]: value });
+};
+
+const getStorageItem = (message, sendResponse) => {
+  const { key } = message.params;
+  chrome.storage.local.get(key, (value) => {
+    sendResponse(value[key]);
+  });
 };
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "GET_TIMER") {
-    return getTimer(sendResponse);
+    getTimer(sendResponse);
   }
   if (message.type === "SET_STORAGE_ITEM") {
-    const { key, value } = message.params;
-    chrome.storage.local.set({ [key]: value });
+    setStorageItem(message);
     sendResponse();
   }
   if (message.type === "GET_STORAGE_ITEM") {
-    const { key } = message.params;
-    chrome.storage.local.get(key, (value) => {
-      sendResponse(value[key]);
-    });
+    getStorageItem(message, sendResponse);
   }
   return true;
 });
