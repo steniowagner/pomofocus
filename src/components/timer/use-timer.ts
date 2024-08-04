@@ -1,74 +1,56 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect } from "react";
 
-import { constants, storage, events } from "../../utils";
+import { storage, events, constants } from "../../utils";
+import { Storage } from "../../utils/constants";
+import { useCountdownTimer } from "../../hooks";
+
+type Timers = Record<
+  keyof Pick<Storage, "startTime" | "timerDuration">,
+  number
+>;
 
 export const useTimer = () => {
-  const [timeLeft, setTimeLeft] = useState(0);
-
-  const intervalId = useRef<ReturnType<typeof setInterval>>();
-
-  const formattedTimeLeft = useMemo(() => {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    return `${minutes < 10 ? "0" : ""}${minutes}:${
-      seconds < 10 ? "0" : ""
-    }${seconds}`;
-  }, [timeLeft]);
-
-  const countdown = useCallback(async () => {
-    if (intervalId.current) {
-      clearInterval(intervalId.current);
-    }
-    const updateTimer = async () => {
-      const timeLeft = await events.sendMessage<number>("GET_TIMER");
-      console.log("timeLeft: ", timeLeft);
-      setTimeLeft(timeLeft);
-      if (timeLeft === 0) {
-        clearInterval(intervalId.current);
-      }
-    };
-    await updateTimer();
-    intervalId.current = setInterval(updateTimer, 1000);
-  }, []);
+  const countdown = useCountdownTimer();
 
   const start = useCallback(async () => {
-    await events.sendMessage("START_TIMER");
-    countdown();
+    const startTime = Date.now();
+    const [timerDuration] = await Promise.all([
+      storage.get<number>("timerDuration"),
+      events.sendMessage("START_TIMER", { startTime }),
+    ]);
+    countdown.start({
+      onFinish: () => console.log("start-FINISHED"),
+      duration: timerDuration,
+      startTime,
+    });
   }, [countdown]);
 
   const reset = useCallback(async () => {
-    if (intervalId.current) {
-      clearInterval(intervalId.current);
-    }
     const [initialTimer] = await Promise.all([
-      storage.get<number>("TIMER_MINUTES", constants.values.timer.defaultTimer),
+      storage.get<number>("timerDuration"),
       events.sendMessage("RESET_TIMER"),
     ]);
-    setTimeLeft(initialTimer);
-  }, []);
+    countdown.reset(initialTimer ?? constants.values.timer.defaultTimer);
+  }, [countdown]);
 
   useEffect(() => {
     const handleStartCountdown = async () => {
-      const timeLeft = await events.sendMessage<number>("GET_TIMER");
-      if (timeLeft > 0) {
-        return countdown();
-      }
-      const initialTimer = await storage.get<number>(
-        "TIMER_MINUTES",
-        constants.values.timer.defaultTimer
-      );
-      setTimeLeft(initialTimer);
+      const items = await storage.get<Timers>(["startTime", "timerDuration"]);
+      countdown.start({
+        onFinish: () => console.log("handleStartCountdown-FINISHED"),
+        duration: items.timerDuration,
+        startTime: items.startTime,
+      });
     };
     handleStartCountdown();
   }, []);
 
   useEffect(() => {
     events.onOpenPoup();
-    return () => clearInterval(intervalId.current);
   }, []);
 
   return {
-    timeLeft: formattedTimeLeft,
+    timeLeft: countdown.timeLeft,
     start,
     reset,
   };

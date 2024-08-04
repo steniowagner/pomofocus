@@ -1,17 +1,19 @@
-import { sendMessage } from "./events";
 import { values } from "./constants";
 
 type Key = keyof typeof values.storage;
 
-export const get = async <T>(key: Key, defaultValue: T): Promise<T> => {
-  const value = await sendMessage<T>("GET_STORAGE_ITEM", {
-    key,
+export const get = async <T>(key: Key | Key[]): Promise<T> => {
+  return new Promise((resolve) => {
+    const keys = Array.isArray(key) ? key : [key];
+    chrome.storage.local.get(keys, (value) => {
+      if (!Array.isArray(key)) {
+        return resolve(value[key] as T);
+      }
+      resolve(value as T);
+    });
   });
-  return value ?? defaultValue;
 };
 
-export const set = async (key: Key, value: unknown) =>
-  sendMessage("SET_STORAGE_ITEM", {
-    key,
-    value,
-  });
+export const set = async (key: Key, value: unknown) => {
+  chrome.storage.local.set({ [key]: value });
+};
