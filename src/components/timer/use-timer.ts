@@ -20,9 +20,7 @@ export const useTimer = () => {
       clearInterval(intervalId.current);
     }
     const updateTimer = async () => {
-      const timeLeft = await events.sendMessage<number>(
-        constants.messages.GET_TIMER
-      );
+      const timeLeft = await events.sendMessage<number>("GET_TIMER");
       console.log("timeLeft: ", timeLeft);
       setTimeLeft(timeLeft);
       if (timeLeft === 0) {
@@ -34,7 +32,7 @@ export const useTimer = () => {
   }, []);
 
   const start = useCallback(async () => {
-    await storage.set(constants.values.storage.TIMER_START, Date.now());
+    await events.sendMessage("START_TIMER", { startTimer: Date.now() });
     countdown();
   }, [countdown]);
 
@@ -43,25 +41,20 @@ export const useTimer = () => {
       clearInterval(intervalId.current);
     }
     const [initialTimer] = await Promise.all([
-      storage.get<number>(
-        constants.values.storage.TIMER_MINUTES,
-        constants.values.timer.defaultTimer
-      ),
-      storage.set(constants.values.storage.TIMER_START, 0),
+      storage.get<number>("TIMER_MINUTES", constants.values.timer.defaultTimer),
+      events.sendMessage("RESET_TIMER"),
     ]);
     setTimeLeft(initialTimer);
   }, []);
 
   useEffect(() => {
     const handleStartCountdown = async () => {
-      const timeLeft = await events.sendMessage<number>(
-        constants.messages.GET_TIMER
-      );
+      const timeLeft = await events.sendMessage<number>("GET_TIMER");
       if (timeLeft > 0) {
         return countdown();
       }
       const initialTimer = await storage.get<number>(
-        constants.values.storage.TIMER_MINUTES,
+        "TIMER_MINUTES",
         constants.values.timer.defaultTimer
       );
       setTimeLeft(initialTimer);
@@ -70,6 +63,7 @@ export const useTimer = () => {
   }, []);
 
   useEffect(() => {
+    events.onOpenPoup();
     return () => clearInterval(intervalId.current);
   }, []);
 

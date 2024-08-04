@@ -1,11 +1,14 @@
 /* eslint-disable no-undef */
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({ TIMER_MINUTES: 15 });
+  chrome.storage.local.set({ TIMER_MINUTES: 5 });
 });
 
 const getTimer = (sendResponse) => {
   chrome.storage.local.get(["TIMER_START", "TIMER_MINUTES"], (result) => {
+    if (result.TIMER_START === undefined) {
+      return sendResponse(result.TIMER_MINUTES);
+    }
     if (result.TIMER_START === 0) {
       return sendResponse(0);
     }
@@ -27,6 +30,21 @@ const getStorageItem = (message, sendResponse) => {
   });
 };
 
+const startTimer = ({ startTimer }) => {
+  chrome.storage.local.set({ TIMER_START: startTimer });
+  chrome.storage.local.get(["TIMER_MINUTES"], (result) => {
+    chrome.alarms.clear("POMODORO_FINISHED_ALARM");
+    chrome.alarms.create("POMODORO_FINISHED_ALARM", {
+      delayInMinutes: result.TIMER_MINUTES / 60,
+    });
+  });
+};
+
+const resetTimer = () => {
+  chrome.storage.local.set({ TIMER_START: 0 });
+  chrome.alarms.clear("POMODORO_FINISHED_ALARM");
+};
+
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "GET_TIMER") {
     getTimer(sendResponse);
@@ -38,5 +56,32 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "GET_STORAGE_ITEM") {
     getStorageItem(message, sendResponse);
   }
+  if (message.type === "START_TIMER") {
+    startTimer(message.params);
+    sendResponse();
+  }
+  if (message.type === "RESET_TIMER") {
+    resetTimer();
+    sendResponse();
+  }
   return true;
+});
+
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name === "POMODORO_FINISHED_ALARM") {
+    chrome.storage.local.get(["IS_POPUP_OPEN"], (result) => {
+      if (!result.IS_POPUP_OPEN) {
+        chrome.tabs.query({ active: true }, (tabs) => {
+          const [activeTab] = tabs;
+          chrome.action.openPopup({ windowId: activeTab.windowId });
+        });
+      }
+    });
+  }
+});
+
+chrome.runtime.onConnect.addListener((port) => {
+  port.onDisconnect.addListener(() => {
+    chrome.storage.local.set({ IS_POPUP_OPEN: false });
+  });
 });

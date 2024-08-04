@@ -1,5 +1,7 @@
+import { messages } from "./constants";
+
 export const sendMessage = <R>(
-  message: string,
+  message: keyof typeof messages,
   params?: Record<string, unknown>
 ): Promise<R> => {
   return new Promise((resolve, reject) => {
@@ -12,4 +14,9 @@ export const sendMessage = <R>(
       reject();
     }
   });
+};
+
+export const onOpenPoup = () => {
+  chrome.runtime.connect();
+  chrome.storage.local.set({ IS_POPUP_OPEN: true });
 };
