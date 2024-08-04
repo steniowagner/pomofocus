@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect } from "react";
 
-import { storage, events, constants } from "../../utils";
+import { useCountdownTimer, useStorage } from "../../hooks";
+import { events, constants } from "../../utils";
 import { Storage, TimerState } from "../../types";
-import { useCountdownTimer } from "../../hooks";
 
 type GetStorageResult = Record<
   keyof Pick<Storage, "startTime" | "timerDuration">,
@@ -11,6 +12,7 @@ type GetStorageResult = Record<
 
 export const useTimer = () => {
   const countdown = useCountdownTimer();
+  const storage = useStorage({});
 
   const start = useCallback(async () => {
     const startTime = Date.now();
@@ -23,7 +25,7 @@ export const useTimer = () => {
       duration: timerDuration,
       startTime,
     });
-  }, [countdown]);
+  }, [countdown.start, storage.get]);
 
   const reset = useCallback(async () => {
     const [initialTimer] = await Promise.all([
@@ -31,7 +33,7 @@ export const useTimer = () => {
       events.sendMessage("RESET_TIMER"),
     ]);
     countdown.reset(initialTimer ?? constants.values.timer.defaultTimer);
-  }, [countdown]);
+  }, [countdown.start, storage.get]);
 
   useEffect(() => {
     const handleStartCountdown = async () => {
@@ -52,9 +54,6 @@ export const useTimer = () => {
   }, []);
 
   useEffect(() => {
-    storage.subscribe<string>("timerState", (value) => {
-      console.log("update: ", value);
-    });
     events.onOpenPoup();
   }, []);
 
