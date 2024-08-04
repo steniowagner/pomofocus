@@ -18,5 +18,5 @@ export const sendMessage = <R = void>(
 
 export const onOpenPoup = () => {
   chrome.runtime.connect();
-  chrome.storage.local.set({ isPoupOpen: true });
+  chrome.storage.local.set({ isPopupOpen: true });
 };

@@ -9,7 +9,6 @@ export const values = {
   storage: {
     timerDuration: "timerDuration",
     startTime: "startTime",
-    isPopupOpen: "isPopupOpen",
     timerState: "timerState",
   },
   timer: {

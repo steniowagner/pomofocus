@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from "react";
 
 import { storage, events, constants } from "../../utils";
-import { useCountdownTimer } from "../../hooks";
 import { Storage, TimerState } from "../../types";
+import { useCountdownTimer } from "../../hooks";
 
 type GetStorageResult = Record<
   keyof Pick<Storage, "startTime" | "timerDuration">,
