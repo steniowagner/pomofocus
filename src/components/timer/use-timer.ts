@@ -32,7 +32,7 @@ export const useTimer = () => {
   }, []);
 
   const start = useCallback(async () => {
-    await events.sendMessage("START_TIMER", { startTimer: Date.now() });
+    await events.sendMessage("START_TIMER");
     countdown();
   }, [countdown]);
 

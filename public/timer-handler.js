@@ -30,8 +30,8 @@ const getStorageItem = (message, sendResponse) => {
   });
 };
 
-const startTimer = ({ startTimer }) => {
-  chrome.storage.local.set({ TIMER_START: startTimer });
+const startTimer = () => {
+  chrome.storage.local.set({ TIMER_START: Date.now() });
   chrome.storage.local.get(["TIMER_MINUTES"], (result) => {
     chrome.alarms.clear("POMODORO_FINISHED_ALARM");
     chrome.alarms.create("POMODORO_FINISHED_ALARM", {
@@ -57,7 +57,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     getStorageItem(message, sendResponse);
   }
   if (message.type === "START_TIMER") {
-    startTimer(message.params);
+    startTimer();
     sendResponse();
   }
   if (message.type === "RESET_TIMER") {

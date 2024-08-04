@@ -1,6 +1,6 @@
 import { messages } from "./constants";
 
-export const sendMessage = <R>(
+export const sendMessage = <R = void>(
   message: keyof typeof messages,
   params?: Record<string, unknown>
 ): Promise<R> => {
