@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-type CountdownParams = {
+type StartParams = {
   duration: number;
   onFinish: () => void;
   startTime: number;
@@ -19,7 +19,7 @@ export const useCountdownTimer = () => {
     }${seconds}`;
   }, [timeLeft]);
 
-  const start = useCallback((params: CountdownParams) => {
+  const start = useCallback((params: StartParams) => {
     if (intervalId.current) {
       clearInterval(intervalId.current);
     }

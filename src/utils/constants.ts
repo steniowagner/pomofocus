@@ -2,6 +2,7 @@ export const messages = {
   START_TIMER: "START_TIMER",
   RESET_TIMER: "RESET_TIMER",
   CONNECT_POPUP: "CONNECT_POPUP",
+  FINISH_TIMER: "FINISH_TIMER",
 };
 
 export const values = {
@@ -9,10 +10,9 @@ export const values = {
     timerDuration: "timerDuration",
     startTime: "startTime",
     isPopupOpen: "isPopupOpen",
+    timerState: "timerState",
   },
   timer: {
     defaultTimer: 30, // 60 * 25,
   },
 };
-
-export type Storage = Record<keyof typeof values.storage, unknown>;

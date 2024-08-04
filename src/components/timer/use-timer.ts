@@ -1,13 +1,13 @@
 import { useCallback, useEffect } from "react";
 
 import { storage, events, constants } from "../../utils";
-import { Storage } from "../../utils/constants";
 import { useCountdownTimer } from "../../hooks";
+import { Storage, TimerState } from "../../types";
 
-type Timers = Record<
+type GetStorageResult = Record<
   keyof Pick<Storage, "startTime" | "timerDuration">,
   number
->;
+> & { timerState: TimerState };
 
 export const useTimer = () => {
   const countdown = useCountdownTimer();
@@ -19,7 +19,7 @@ export const useTimer = () => {
       events.sendMessage("START_TIMER", { startTime }),
     ]);
     countdown.start({
-      onFinish: () => console.log("start-FINISHED"),
+      onFinish: () => events.sendMessage("FINISH_TIMER"),
       duration: timerDuration,
       startTime,
     });
@@ -35,17 +35,26 @@ export const useTimer = () => {
 
   useEffect(() => {
     const handleStartCountdown = async () => {
-      const items = await storage.get<Timers>(["startTime", "timerDuration"]);
-      countdown.start({
-        onFinish: () => console.log("handleStartCountdown-FINISHED"),
-        duration: items.timerDuration,
-        startTime: items.startTime,
-      });
+      const timers = await storage.get<GetStorageResult>([
+        "startTime",
+        "timerDuration",
+        "timerState",
+      ]);
+      if (timers.timerState === "RUNNING") {
+        countdown.start({
+          onFinish: () => events.sendMessage("FINISH_TIMER"),
+          duration: timers.timerDuration,
+          startTime: timers.startTime,
+        });
+      }
     };
     handleStartCountdown();
   }, []);
 
   useEffect(() => {
+    storage.subscribe<string>("timerState", (value) => {
+      console.log("update: ", value);
+    });
     events.onOpenPoup();
   }, []);
 

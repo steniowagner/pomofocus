@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({ timerDuration: 5 });
+  chrome.storage.local.set({ timerDuration: 5, timerState: "INITIAL" });
 });
 
 const startTimer = ({ startTime }) => {
-  chrome.storage.local.set({ startTime });
+  chrome.storage.local.set({ startTime, timerState: "RUNNING" });
   chrome.storage.local.get(["timerDuration"], (result) => {
     chrome.alarms.clear("POMODORO_FINISHED_ALARM");
     chrome.alarms.create("POMODORO_FINISHED_ALARM", {
@@ -15,17 +15,23 @@ const startTimer = ({ startTime }) => {
 };
 
 const resetTimer = () => {
-  chrome.storage.local.set({ startTime: 0 });
+  chrome.storage.local.set({ startTime: 0, timerState: "RESET" });
   chrome.alarms.clear("POMODORO_FINISHED_ALARM");
+};
+
+const finishTimer = () => {
+  chrome.storage.local.set({ startTime: 0, timerState: "FINISHED" });
 };
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === "START_TIMER") {
-    console.log("message.params: ", message.params);
     startTimer(message.params);
   }
   if (message.type === "RESET_TIMER") {
     resetTimer();
+  }
+  if (message.type === "FINISH_TIMER") {
+    finishTimer();
   }
   sendResponse();
   return true;
