@@ -8,4 +8,17 @@
 
 - Work duration - default is 25
 - Rest duration - default is 5
+- How many working sessions
+- Short pause
+- Long pause
 - Theme - dark/light
+
+- The app should have by default this cycle:
+  a. work
+  b. short pause
+  c. work
+  d. short pause
+  e. work
+  f. long pause
+- The user should be able to adjust how many work sessions they want.
+- The user should manually start the timer after the rest duration.
