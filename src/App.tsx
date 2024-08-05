@@ -1,10 +1,10 @@
-import { RestTimer, Timer } from "./components";
+import { PauseTimer, Timer } from "./components";
 
 export const App = () => {
   return (
     <div>
       <Timer />
-      <RestTimer />
+      <PauseTimer />
     </div>
   );
 };

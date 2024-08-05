@@ -3,8 +3,8 @@ export const messages = {
   RESET_WORK_TIMER: "RESET_WORK_TIMER",
   START_WORK_TIMER: "START_WORK_TIMER",
   FINISH_WORK_TIMER: "FINISH_WORK_TIMER",
-  START_REST_TIMER: "START_REST_TIMER",
-  FINISH_REST_TIMER: "FINISH_REST_TIMER",
+  START_PAUSE_TIMER: "START_PAUSE_TIMER",
+  FINISH_PAUSE_TIMER: "FINISH_PAUSE_TIMER",
 };
 
 export const values = {
@@ -12,8 +12,8 @@ export const values = {
     timerDuration: "timerDuration",
     startTime: "startTime",
     timerState: "timerState",
-    restDuration: "restDuration",
-    restStartTime: "restStartTime",
+    pauseDuration: "pauseDuration",
+    pauseStartTime: "pauseStartTime",
   },
   timer: {
     defaultTimer: 30, // 60 * 25,

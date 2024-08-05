@@ -5,7 +5,7 @@ export type Storage = Record<keyof typeof constants.values.storage, unknown>;
 export type TimerState =
   | "IDLE"
   | "RUNNING"
-  | "PAUSED"
   | "RESET"
   | "FINISHED"
-  | "RESTING";
+  | "SHORT_PAUSE"
+  | "LONG_PAUSE";

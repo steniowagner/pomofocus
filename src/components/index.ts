@@ -1,2 +1,2 @@
 export { Timer } from "./timer/Timer";
-export { RestTimer } from "./rest-timer/RestTimer";
+export { PauseTimer } from "./pause-timer/PauseTimer";
