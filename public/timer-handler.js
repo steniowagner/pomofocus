@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-const startTimer = ({ startTime }) => {
+const startWorkTimer = ({ startTime }) => {
   chrome.storage.local.set({ startTime, timerState: "RUNNING" });
   chrome.storage.local.get(["timerDuration"], (result) => {
     chrome.alarms.clear("POMODORO_FINISHED_ALARM");
@@ -18,7 +18,7 @@ const startTimer = ({ startTime }) => {
   });
 };
 
-const resetTimer = () => {
+const resetWorkTimer = () => {
   chrome.storage.local.set({ startTime: 0, timerState: "RESET" });
   chrome.alarms.clear("POMODORO_FINISHED_ALARM");
 };
@@ -27,7 +27,7 @@ const finishTimer = () => {
   chrome.storage.local.set({ startTime: 0, timerState: "FINISHED" });
 };
 
-const startRest = () => {
+const startRestTimer = () => {
   chrome.storage.local.set({
     restStartTime: Date.now(),
     timerState: "RESTING",
@@ -40,25 +40,25 @@ const startRest = () => {
   });
 };
 
-const finishRest = () => {
+const finishRestTimer = () => {
   chrome.storage.local.set({ restStartTime: undefined, timerState: "IDLE" });
 };
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-  if (message.type === "START_TIMER") {
-    startTimer(message.params);
+  if (message.type === "START_WORK_TIMER") {
+    startWorkTimer(message.params);
   }
-  if (message.type === "FINISH_TIMER") {
+  if (message.type === "FINISH_WORK_TIMER") {
     finishTimer();
   }
-  if (message.type === "RESET_TIMER") {
-    resetTimer();
+  if (message.type === "RESET_WORK_TIMER") {
+    resetWorkTimer();
   }
-  if (message.type === "START_REST") {
-    startRest();
+  if (message.type === "START_REST_TIMER") {
+    startRestTimer();
   }
-  if (message.type === "FINISH_REST") {
-    finishRest();
+  if (message.type === "FINISH_REST_TIMER") {
+    finishRestTimer();
   }
   sendResponse();
   return true;

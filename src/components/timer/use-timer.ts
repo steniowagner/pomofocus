@@ -18,10 +18,10 @@ export const useTimer = () => {
     const startTime = Date.now();
     const [timerDuration] = await Promise.all([
       storage.get<number>("timerDuration"),
-      events.sendMessage("START_TIMER", { startTime }),
+      events.sendMessage("START_WORK_TIMER", { startTime }),
     ]);
     countdown.start({
-      onFinish: () => events.sendMessage("FINISH_TIMER"),
+      onFinish: () => events.sendMessage("FINISH_WORK_TIMER"),
       duration: timerDuration,
       startTime,
     });
@@ -30,7 +30,7 @@ export const useTimer = () => {
   const reset = useCallback(async () => {
     const [initialTimer] = await Promise.all([
       storage.get<number>("timerDuration"),
-      events.sendMessage("RESET_TIMER"),
+      events.sendMessage("RESET_WORK_TIMER"),
     ]);
     countdown.reset(initialTimer ?? constants.values.timer.defaultTimer);
   }, [countdown.start, storage.get]);
@@ -44,7 +44,7 @@ export const useTimer = () => {
       ]);
       if (timers.timerState === "RUNNING") {
         countdown.start({
-          onFinish: () => events.sendMessage("FINISH_TIMER"),
+          onFinish: () => events.sendMessage("FINISH_WORK_TIMER"),
           duration: timers.timerDuration,
           startTime: timers.startTime,
         });

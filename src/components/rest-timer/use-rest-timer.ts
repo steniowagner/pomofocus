@@ -19,7 +19,7 @@ export const useRestTimer = () => {
     onChange: async (values: Record<string, unknown>) => {
       const { timerState } = values as OnChangeStorage;
       if (timerState === "FINISHED") {
-        await events.sendMessage("START_REST");
+        await events.sendMessage("START_REST_TIMER");
       }
       if (timerState === "RESTING") {
         setStartedRestFromEvent(true);
@@ -29,7 +29,7 @@ export const useRestTimer = () => {
   });
 
   const handleFinishRest = useCallback(async () => {
-    await events.sendMessage("FINISH_REST");
+    await events.sendMessage("FINISH_REST_TIMER");
     setStartedRestFromEvent(false);
     setStartedRestFromStorage(false);
   }, []);
