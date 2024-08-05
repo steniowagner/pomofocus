@@ -14,6 +14,8 @@ export const values = {
     timerState: "timerState",
     pauseDuration: "pauseDuration",
     pauseStartTime: "pauseStartTime",
+    currentWorkingSession: "currentWorkingSession",
+    numberWorkingSessions: "numberWorkingSessions",
   },
   timer: {
     defaultTimer: 30, // 60 * 25,
