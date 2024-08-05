@@ -9,8 +9,8 @@ export const messages = {
 
 export const values = {
   storage: {
-    timerDuration: "timerDuration",
-    startTime: "startTime",
+    workingDuration: "workingDuration",
+    workingStartTime: "workingStartTime",
     timerState: "timerState",
     pauseDuration: "pauseDuration",
     pauseStartTime: "pauseStartTime",
