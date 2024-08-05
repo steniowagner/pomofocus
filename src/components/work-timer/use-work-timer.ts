@@ -10,7 +10,7 @@ type GetStorageResult = Record<
   number
 > & { timerState: TimerState };
 
-export const useTimer = () => {
+export const useWorkTimer = () => {
   const countdown = useCountdownTimer();
   const storage = useStorage({});
 

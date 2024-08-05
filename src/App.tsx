@@ -1,9 +1,9 @@
-import { PauseTimer, Timer } from "./components";
+import { PauseTimer, WorkTimer } from "./components";
 
 export const App = () => {
   return (
     <div>
-      <Timer />
+      <WorkTimer />
       <PauseTimer />
     </div>
   );
