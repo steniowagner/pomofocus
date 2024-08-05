@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 const startWorkTimer = ({ startTime }) => {
-  chrome.storage.local.set({ startTime, timerState: "RUNNING" });
+  chrome.storage.local.set({ startTime, timerState: "WORKING" });
   chrome.storage.local.get(["timerDuration"], (result) => {
     chrome.alarms.clear("POMODORO_FINISHED_ALARM");
     chrome.alarms.create("POMODORO_FINISHED_ALARM", {

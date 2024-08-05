@@ -42,7 +42,7 @@ export const useWorkTimer = () => {
         "timerDuration",
         "timerState",
       ]);
-      if (timers.timerState === "RUNNING") {
+      if (timers.timerState === "WORKING") {
         countdown.start({
           onFinish: () => events.sendMessage("FINISH_WORK_TIMER"),
           duration: timers.timerDuration,
