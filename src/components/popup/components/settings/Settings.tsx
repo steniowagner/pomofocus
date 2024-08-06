@@ -10,7 +10,7 @@ export const Settings = (props: SettingsProps) => {
   const settings = useSettings({ onSaveSettings: props.onSaveSettings });
 
   return (
-    <div className="w-full bg-background text-accent-foreground p-4">
+    <div className="w-full bg-background text-accent-foreground p-4 border border-0 border-t-2 border-gray-300">
       <div className="flex flex-col pb-4">
         <span className="text-lg font-semibold">Settings</span>
         <div className="flex flex-col gap-y-4 text-sm">

@@ -50,6 +50,7 @@ export const useCountdownTimer = () => {
 
   return {
     timeLeft: formattedTimeLeft,
+    setTimeLeft,
     start,
     reset,
   };

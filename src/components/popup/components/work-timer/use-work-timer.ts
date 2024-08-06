@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useCountdownTimer, useStorage } from "../../../../hooks";
 import { events, constants } from "../../../../utils";
@@ -10,9 +10,42 @@ type GetStorageResult = Record<
   number
 > & { timerState: TimerState };
 
+type OnChangeStorage = {
+  timerState: TimerState;
+};
+
 export const useWorkTimer = () => {
+  const [isStartButtonDisabled, setIsStartButtonDisabled] = useState(false);
+  const [isResetButtonDisabled, setIsResetButtonDisabled] = useState(false);
+
   const countdown = useCountdownTimer();
-  const storage = useStorage({});
+
+  const disableActions = useCallback((timerState: TimerState) => {
+    if (timerState === "WORKING") {
+      setIsStartButtonDisabled(true);
+      setIsResetButtonDisabled(false);
+      return;
+    }
+    if (timerState === "LONG_PAUSE" || timerState === "SHORT_PAUSE") {
+      setIsStartButtonDisabled(true);
+      setIsResetButtonDisabled(true);
+      return;
+    }
+    setIsStartButtonDisabled(false);
+    setIsResetButtonDisabled(false);
+  }, []);
+
+  const storage = useStorage({
+    keysToWatch: "timerState",
+    onChange: async (values: Record<string, unknown>) => {
+      const { timerState } = values as OnChangeStorage;
+      disableActions(timerState);
+      if (timerState === "IDLE") {
+        const workingDuration = await storage.get<number>("workingDuration");
+        countdown.setTimeLeft(workingDuration);
+      }
+    },
+  });
 
   const start = useCallback(async () => {
     const workingStartTime = Date.now();
@@ -36,12 +69,16 @@ export const useWorkTimer = () => {
   }, [countdown.start, storage.get]);
 
   useEffect(() => {
-    const handleStartCountdown = async () => {
+    const handleSetInitialTimer = async () => {
       const timers = await storage.get<GetStorageResult>([
         "workingStartTime",
         "workingDuration",
         "timerState",
       ]);
+      disableActions(timers.timerState);
+      if (timers.timerState === "IDLE") {
+        countdown.setTimeLeft(timers.workingDuration);
+      }
       if (timers.timerState === "WORKING") {
         countdown.start({
           onFinish: () => events.sendMessage("FINISH_WORK_TIMER"),
@@ -50,11 +87,13 @@ export const useWorkTimer = () => {
         });
       }
     };
-    handleStartCountdown();
+    handleSetInitialTimer();
   }, []);
 
   return {
     timeLeft: countdown.timeLeft,
+    isStartButtonDisabled,
+    isResetButtonDisabled,
     start,
     reset,
   };

@@ -12,11 +12,20 @@ export const WorkTimer = () => {
         {workTimer.timeLeft}
       </h1>
       <div className="w-full flex justify-center items-center gap-x-4 mt-4">
-        <Button size="sm" onClick={workTimer.start}>
+        <Button
+          disabled={workTimer.isStartButtonDisabled}
+          size="sm"
+          onClick={workTimer.start}
+        >
           <PlayIcon className="w-4 h-4 mr-1" />
           Start
         </Button>
-        <Button size="sm" variant="secondary" onClick={workTimer.reset}>
+        <Button
+          disabled={workTimer.isResetButtonDisabled}
+          size="sm"
+          variant="secondary"
+          onClick={workTimer.reset}
+        >
           <RefreshCcw className="w-4 h-4 mr-1" />
           Reset
         </Button>
