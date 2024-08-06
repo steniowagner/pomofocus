@@ -58,7 +58,9 @@ export const usePauseTimer = () => {
     const handleStartCountdown = async () => {
       const { pauseStartTime, timerState } =
         await storage.get<GetStorageResult>(["pauseStartTime", "timerState"]);
-      if (pauseStartTime) {
+      const isPaused =
+        timerState === "SHORT_PAUSE" || timerState === "LONG_PAUSE";
+      if (isPaused && pauseStartTime) {
         setPauseType(
           `Time for a ${timerState === "SHORT_PAUSE" ? "short" : "long"} pause`
         );
