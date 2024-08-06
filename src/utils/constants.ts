@@ -18,6 +18,7 @@ export const values = {
     numberWorkingSessions: "numberWorkingSessions",
     shortPauseDuration: "shortPauseDuration",
     longPauseDuration: "longPauseDuration",
+    theme: "theme",
   },
   timer: {
     maxValue: 60 * 24, // onde day,

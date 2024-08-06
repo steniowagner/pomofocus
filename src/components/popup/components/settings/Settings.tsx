@@ -1,6 +1,7 @@
 import { Button, Input, InputLabel, Switch } from "../../..";
 import { constants } from "../../../../utils";
 import { useSettings } from "./use-settings";
+import { useThemeProvider } from "../../../../contexts";
 
 type SettingsProps = {
   onSaveSettings: () => void;
@@ -8,6 +9,7 @@ type SettingsProps = {
 
 export const Settings = (props: SettingsProps) => {
   const settings = useSettings({ onSaveSettings: props.onSaveSettings });
+  const theme = useThemeProvider();
 
   return (
     <div className="w-full bg-background text-accent-foreground p-4 border border-0 border-t-2 border-gray-300">
@@ -16,7 +18,7 @@ export const Settings = (props: SettingsProps) => {
         <div className="flex flex-col gap-y-4 text-sm">
           <div className="flex justify-between items-center pt-2">
             <InputLabel>Dark theme</InputLabel>
-            <Switch checked onToggle={() => {}} />
+            <Switch checked={theme.isDarkTheme} onToggle={theme.toggleTheme} />
           </div>
           <Input
             label="Working sessions"

@@ -14,11 +14,7 @@ export const App = () => {
   const [b, setB] = useState(false);
   const [l, setL] = useState(false);
 
-  return (
-    <div className="dark">
-      <Popup />
-    </div>
-  );
+  return <Popup />;
   // const [timerState, setTimerState] = useState<TimerState>();
   // const [currentWorkingSession, setCurrentWorkingSession] = useState<number>();
   // const [numberWorkingSessions, setNumberWorkingSessions] = useState<number>();
