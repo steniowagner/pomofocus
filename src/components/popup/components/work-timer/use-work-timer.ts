@@ -12,6 +12,7 @@ type GetStorageResult = Record<
 
 type OnChangeStorage = {
   timerState: TimerState;
+  workingDuration: number;
 };
 
 export const useWorkTimer = () => {
@@ -36,11 +37,14 @@ export const useWorkTimer = () => {
   }, []);
 
   const storage = useStorage({
-    keysToWatch: "timerState",
+    keysToWatch: ["timerState", "workingDuration"],
     onChange: async (values: Record<string, unknown>) => {
-      const { timerState } = values as OnChangeStorage;
+      const { workingDuration, timerState } = values as OnChangeStorage;
       disableActions(timerState);
-      if (timerState === "IDLE") {
+      if (workingDuration) {
+        countdown.setTimeLeft(workingDuration);
+      }
+      if (timerState === "IDLE" && !workingDuration) {
         const workingDuration = await storage.get<number>("workingDuration");
         countdown.setTimeLeft(workingDuration);
       }
