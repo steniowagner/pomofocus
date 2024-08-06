@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(() => {
     pauseDuration: 5,
     shortPauseDuration: 5,
     longPauseDuration: 10,
-    currentWorkingSession: 0,
+    currentWorkingSession: 1,
     numberWorkingSessions: 3,
     theme: "light",
   });
@@ -33,33 +33,23 @@ chrome.runtime.onConnect.addListener((port) => {
 });
 
 const startWorkTimer = ({ workingStartTime }) => {
-  chrome.storage.local.get(
-    ["workingDuration", "currentWorkingSession"],
-    (result) => {
-      chrome.storage.local.set({
-        currentWorkingSession: result.currentWorkingSession + 1,
-        timerState: "WORKING",
-        workingStartTime,
-      });
-      chrome.alarms.clear("OPEN_POPUP_ALARM");
-      chrome.alarms.create("OPEN_POPUP_ALARM", {
-        delayInMinutes: result.workingDuration / 60,
-      });
-    }
-  );
+  chrome.storage.local.get(["workingDuration"], (result) => {
+    chrome.storage.local.set({
+      timerState: "WORKING",
+      workingStartTime,
+    });
+    chrome.alarms.clear("OPEN_POPUP_ALARM");
+    chrome.alarms.create("OPEN_POPUP_ALARM", {
+      delayInMinutes: result.workingDuration / 60,
+    });
+  });
 };
 
 const resetWorkTimer = () => {
   chrome.alarms.clear("OPEN_POPUP_ALARM");
-  chrome.storage.local.get("currentWorkingSession", (result) => {
-    const previousWorkingSession = result.currentWorkingSession - 1;
-    const currentWorkingSession =
-      previousWorkingSession < 0 ? 0 : previousWorkingSession;
-    chrome.storage.local.set({
-      currentWorkingSession,
-      workingStartTime: 0,
-      timerState: "RESET",
-    });
+  chrome.storage.local.set({
+    workingStartTime: 0,
+    timerState: "RESET",
   });
 };
 
@@ -98,8 +88,16 @@ const finishPauseTimer = () => {
   chrome.storage.local.get(
     ["timerState", "currentWorkingSession", "numberWorkingSessions"],
     (result) => {
+      const isPaused =
+        result.timerState !== "LONG_PAUSE" &&
+        result.timerState !== "SHORT_PAUSE";
+      if (isPaused) {
+        return;
+      }
       const currentWorkingSession =
-        result.timerState === "LONG_PAUSE" ? 0 : result.currentWorkingSession;
+        result.timerState === "LONG_PAUSE"
+          ? 1
+          : result.currentWorkingSession + 1;
       chrome.storage.local.set({
         pauseStartTime: undefined,
         currentWorkingSession,

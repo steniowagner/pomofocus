@@ -37,14 +37,13 @@ export const usePauseTimer = () => {
     keysToWatch: "timerState",
   });
 
-  const handleFinishPause = useCallback(async () => {
-    await events.sendMessage("FINISH_PAUSE_TIMER");
-    setPauseFromEvent(false);
-    setPauseFromStorage(false);
-  }, []);
-
   const start = useCallback(
     async (startTime: number) => {
+      const handleFinishPause = async () => {
+        await events.sendMessage("FINISH_PAUSE_TIMER");
+        setPauseFromEvent(false);
+        setPauseFromStorage(false);
+      };
       const pauseDuration = await storage.get<number>("pauseDuration");
       countdown.start({
         duration: pauseDuration,
@@ -52,7 +51,7 @@ export const usePauseTimer = () => {
         startTime,
       });
     },
-    [handleFinishPause, storage.get, countdown.start]
+    [storage.get, countdown.start]
   );
 
   useEffect(() => {

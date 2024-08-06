@@ -6,6 +6,7 @@ import { PauseTimer } from "./components/pause-timer/PauseTimer";
 import { Settings } from "./components/settings/Settings";
 import { Button } from "../button/Button";
 import { usePopup } from "./use-popup";
+
 export const Popup = () => {
   const popup = usePopup();
 

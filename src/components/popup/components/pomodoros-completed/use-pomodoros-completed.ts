@@ -29,9 +29,7 @@ export const usePomodorosCompleted = () => {
         "currentWorkingSession",
         "numberWorkingSessions",
       ]);
-      setCurrentWorkingSession(
-        values.currentWorkingSession === 0 ? 1 : values.currentWorkingSession
-      );
+      setCurrentWorkingSession(values.currentWorkingSession);
       setNumberWorkingSessions(values.numberWorkingSessions);
     };
     handleSetInitialWorkingSessionValues();
