@@ -17,7 +17,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === "OPEN_POPUP_ALARM") {
     chrome.storage.local.get("isPopupOpen", (result) => {
       if (!result.isPopupOpen) {
-        chrome.tabs.query({ active: true }, (tabs) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
           const [activeTab] = tabs;
           chrome.action.openPopup({ windowId: activeTab.windowId });
         });
