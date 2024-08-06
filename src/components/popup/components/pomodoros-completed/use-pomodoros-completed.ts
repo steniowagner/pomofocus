@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useStorage } from "../../../../hooks";
 
-type WorkingSessionsValues = {
+type GetStorageResult = {
   currentWorkingSession: number;
   numberWorkingSessions: number;
 };
@@ -25,7 +25,7 @@ export const usePomodorosCompleted = () => {
 
   useEffect(() => {
     const handleSetInitialWorkingSessionValues = async () => {
-      const values = await storage.get<WorkingSessionsValues>([
+      const values = await storage.get<GetStorageResult>([
         "currentWorkingSession",
         "numberWorkingSessions",
       ]);

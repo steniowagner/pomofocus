@@ -9,9 +9,15 @@ type OnChangeStorage = {
   timerState: TimerState;
 };
 
+type GetStorageResult = {
+  pauseStartTime: number;
+  timerState: string;
+};
+
 export const usePauseTimer = () => {
   const [isPauseFromStorage, setPauseFromStorage] = useState(false);
   const [isPauseFromEvent, setPauseFromEvent] = useState(false);
+  const [pauseType, setPauseType] = useState<string>("");
 
   const countdown = useCountdownTimer();
 
@@ -21,6 +27,9 @@ export const usePauseTimer = () => {
       if (timerState === "FINISHED") {
         await events.sendMessage("START_PAUSE_TIMER");
       }
+      setPauseType(
+        `Time for a ${timerState === "SHORT_PAUSE" ? "short" : "long"} pause`
+      );
       const isPaused =
         timerState === "SHORT_PAUSE" || timerState === "LONG_PAUSE";
       setPauseFromEvent(isPaused);
@@ -48,8 +57,12 @@ export const usePauseTimer = () => {
 
   useEffect(() => {
     const handleStartCountdown = async () => {
-      const pauseStartTime = await storage.get<number>("pauseStartTime");
+      const { pauseStartTime, timerState } =
+        await storage.get<GetStorageResult>(["pauseStartTime", "timerState"]);
       if (pauseStartTime) {
+        setPauseType(
+          `Time for a ${timerState === "SHORT_PAUSE" ? "short" : "long"} pause`
+        );
         setPauseFromStorage(true);
         start(pauseStartTime);
       }
@@ -66,5 +79,6 @@ export const usePauseTimer = () => {
   return {
     isPaused: isPauseFromEvent || isPauseFromStorage,
     timeLeft: countdown.timeLeft,
+    pauseType,
   };
 };
