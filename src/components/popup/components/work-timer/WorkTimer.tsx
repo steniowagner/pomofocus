@@ -1,0 +1,26 @@
+import { PlayIcon, RefreshCcw } from "lucide-react";
+
+import { useWorkTimer } from "./use-work-timer";
+import { Button } from "../../..";
+
+export const WorkTimer = () => {
+  const workTimer = useWorkTimer();
+
+  return (
+    <div className="flex flex-col">
+      <h1 className="text-3xl w-auto self-center font-bold text-accent-foreground">
+        {workTimer.timeLeft}
+      </h1>
+      <div className="w-full flex justify-center items-center gap-x-4 mt-4">
+        <Button size="sm" onClick={workTimer.start}>
+          <PlayIcon className="w-4 h-4 mr-1" />
+          Start
+        </Button>
+        <Button size="sm" variant="secondary" onClick={workTimer.reset}>
+          <RefreshCcw className="w-4 h-4 mr-1" />
+          Reset
+        </Button>
+      </div>
+    </div>
+  );
+};

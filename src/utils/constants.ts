@@ -16,8 +16,14 @@ export const values = {
     pauseStartTime: "pauseStartTime",
     currentWorkingSession: "currentWorkingSession",
     numberWorkingSessions: "numberWorkingSessions",
+    shortPauseDuration: "shortPauseDuration",
+    longPauseDuration: "longPauseDuration",
   },
   timer: {
-    defaultTimer: 30, // 60 * 25,
+    maxValue: 60 * 24, // onde day,
+    numberWorkingSessions: 3,
+    workingDuration: 25,
+    shortPauseDuration: 5,
+    longPauseDuration: 10,
   },
 };

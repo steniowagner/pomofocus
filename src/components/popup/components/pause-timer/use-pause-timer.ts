@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from "react";
 
-import { useCountdownTimer, useStorage } from "../../hooks";
-import { TimerState } from "../../types";
-import { events } from "../../utils";
+import { useCountdownTimer, useStorage } from "../../../../hooks";
+import { TimerState } from "../../../../types";
+import { events } from "../../../../utils";
 
 type OnChangeStorage = {
   timerState: TimerState;
@@ -23,9 +23,7 @@ export const usePauseTimer = () => {
       }
       const isPaused =
         timerState === "SHORT_PAUSE" || timerState === "LONG_PAUSE";
-      if (isPaused) {
-        setPauseFromEvent(true);
-      }
+      setPauseFromEvent(isPaused);
     },
     keysToWatch: "timerState",
   });

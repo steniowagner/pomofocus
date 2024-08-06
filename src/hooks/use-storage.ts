@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { constants } from "../utils";
 
-type StorageKey = keyof typeof constants.values.storage;
+export type StorageKey = keyof typeof constants.values.storage;
 
 type StorageChange = {
   [key: string]: chrome.storage.StorageChange;

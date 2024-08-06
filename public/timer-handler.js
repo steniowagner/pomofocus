@@ -9,6 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
     longPauseDuration: 10,
     currentWorkingSession: 0,
     numberWorkingSessions: 3,
+    theme: "light",
   });
 });
 

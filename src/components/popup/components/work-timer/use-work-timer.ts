@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect } from "react";
 
-import { useCountdownTimer, useStorage } from "../../hooks";
-import { events, constants } from "../../utils";
-import { Storage, TimerState } from "../../types";
+import { useCountdownTimer, useStorage } from "../../../../hooks";
+import { events, constants } from "../../../../utils";
+import { Storage, TimerState } from "../../../../types";
 
 type GetStorageResult = Record<
   keyof Pick<Storage, "workingStartTime" | "workingDuration">,
@@ -28,11 +28,11 @@ export const useWorkTimer = () => {
   }, [countdown.start, storage.get]);
 
   const reset = useCallback(async () => {
-    const [initialTimer] = await Promise.all([
+    const [workingDuration] = await Promise.all([
       storage.get<number>("workingDuration"),
       events.sendMessage("RESET_WORK_TIMER"),
     ]);
-    countdown.reset(initialTimer ?? constants.values.timer.defaultTimer);
+    countdown.reset(workingDuration ?? constants.values.timer.workingDuration);
   }, [countdown.start, storage.get]);
 
   useEffect(() => {
@@ -51,10 +51,6 @@ export const useWorkTimer = () => {
       }
     };
     handleStartCountdown();
-  }, []);
-
-  useEffect(() => {
-    events.onOpenPoup();
   }, []);
 
   return {
