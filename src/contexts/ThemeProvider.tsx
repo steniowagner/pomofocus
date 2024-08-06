@@ -57,7 +57,7 @@ export const ThemeContextProvider = (props: ThemeContextProviderProps) => {
         toggleTheme,
       }}
     >
-      <div className={theme}>{props.children}</div>
+      {theme && <div className={theme}>{props.children}</div>}
     </ThemeContext.Provider>
   );
 };
