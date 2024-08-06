@@ -2,13 +2,17 @@ import { Button, Input, InputLabel, Switch } from "../../..";
 import { constants } from "../../../../utils";
 import { useSettings } from "./use-settings";
 
-export const Settings = () => {
-  const settings = useSettings();
+type SettingsProps = {
+  onSaveSettings: () => void;
+};
+
+export const Settings = (props: SettingsProps) => {
+  const settings = useSettings({ onSaveSettings: props.onSaveSettings });
 
   return (
     <div className="w-full bg-background text-accent-foreground p-4">
       <div className="flex flex-col pb-4">
-        <span className="text-md font-semibold">Settings</span>
+        <span className="text-lg font-semibold">Settings</span>
         <div className="flex flex-col gap-y-4 text-sm">
           <div className="flex justify-between items-center pt-2">
             <InputLabel>Dark theme</InputLabel>

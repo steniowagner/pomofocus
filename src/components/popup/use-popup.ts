@@ -1,4 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+
+import { events } from "../../utils";
 
 export const usePopup = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(true);
@@ -7,12 +9,17 @@ export const usePopup = () => {
     setIsSettingsOpen(true);
   }, []);
 
-  // const closeSettings = useCallback(() => {
-  //   setIsSettingsOpen(false);
-  // }, []);
+  const closeSettings = useCallback(() => {
+    setIsSettingsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    events.openPoup();
+  }, []);
 
   return {
     onClickSettings: openSettings,
+    closeSettings,
     isSettingsOpen,
   };
 };

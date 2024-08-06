@@ -10,7 +10,11 @@ type Settings = {
   longPauseDuration: number;
 };
 
-export const useSettings = () => {
+type UseSettingsProps = {
+  onSaveSettings: () => void;
+};
+
+export const useSettings = (props: UseSettingsProps) => {
   const [settings, setSettings] = useState<Settings>({
     numberWorkingSessions: constants.values.timer.numberWorkingSessions,
     workingDuration: constants.values.timer.workingDuration,
@@ -26,7 +30,8 @@ export const useSettings = () => {
         storage.set(setting as StorageKey, settings[setting as keyof Settings])
       )
     );
-  }, [settings, storage]);
+    props.onSaveSettings();
+  }, [settings, storage, props]);
 
   const changeSettings = useCallback((key: keyof Settings, value: string) => {
     setSettings((previousSettings) => ({
