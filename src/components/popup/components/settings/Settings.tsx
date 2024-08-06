@@ -65,9 +65,18 @@ export const Settings = (props: SettingsProps) => {
           />
         </div>
       </div>
-      <Button onClick={settings.onClickSaveSettings} size="sm">
-        Save
-      </Button>
+      <div className="flex justify-end gap-x-2">
+        <Button
+          onClick={settings.onClickSaveSettings}
+          size="sm"
+          variant="primary"
+        >
+          Save
+        </Button>
+        <Button onClick={props.onSaveSettings} size="sm" variant="secondary">
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 };
