@@ -4,15 +4,13 @@ export const sendMessage = <R = void>(
   message: keyof typeof messages,
   params?: Record<string, unknown>
 ): Promise<R> => {
-  return new Promise((resolve, reject) => {
-    try {
-      chrome.runtime.sendMessage({ type: message, params }, (response) => {
-        resolve(response as R);
-      });
-    } catch (err) {
-      console.error(err);
-      reject();
-    }
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage<unknown, R>(
+      { type: message, params },
+      (response) => {
+        resolve(response);
+      }
+    );
   });
 };
 
