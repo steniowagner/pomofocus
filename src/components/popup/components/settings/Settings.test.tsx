@@ -22,7 +22,6 @@ class Sut {
 
   get components() {
     return {
-      switch: screen.getByTestId("settings-theme-switch"),
       workingSessionsInput: screen.getByTestId(
         "settings-working-sessions-input"
       ),
@@ -51,42 +50,6 @@ describe("Settings component", () => {
         expect(sut.components.saveButton).toBeInTheDocument();
         expect(sut.components.cancelButton).toBeInTheDocument();
       });
-    });
-  });
-
-  describe("Toggling theme", () => {
-    it("should toggle the theme from DARK to LIGHT", async () => {
-      global.chrome.storage.local.get = vi
-        .fn()
-        .mockImplementationOnce((_keys, callback) =>
-          callback({
-            theme: "dark",
-          })
-        );
-      const sut = new Sut();
-      await waitFor(() => {
-        expect(sut.components.switch).toBeInTheDocument();
-      });
-      expect(sut.components.switch).toHaveProperty("checked", true);
-      fireEvent.click(sut.components.switch);
-      expect(sut.components.switch).toHaveProperty("checked", false);
-    });
-
-    it("should toggle the theme from LIGHT to DARK", async () => {
-      global.chrome.storage.local.get = vi
-        .fn()
-        .mockImplementationOnce((_keys, callback) =>
-          callback({
-            theme: "light",
-          })
-        );
-      const sut = new Sut();
-      await waitFor(() => {
-        expect(sut.components.switch).toBeInTheDocument();
-      });
-      expect(sut.components.switch).toHaveProperty("checked", false);
-      fireEvent.click(sut.components.switch);
-      expect(sut.components.switch).toHaveProperty("checked", true);
     });
   });
 

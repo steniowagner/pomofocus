@@ -11,9 +11,14 @@ export const Popup = () => {
   const popup = usePopup();
 
   return (
-    <div className="flex flex-col w-72 bg-background">
+    <div data-testid="popup" className="flex flex-col w-72 bg-background">
       <div className="w-full flex justify-end pr-2 pt-1">
-        <Button variant="ghost" size="icon" onClick={popup.onClickSettings}>
+        <Button
+          data-testid="settings-button"
+          variant="ghost"
+          size="icon"
+          onClick={popup.onClickSettings}
+        >
           <SettingsIcon className="w-4 h-4" />
         </Button>
       </div>

@@ -1,6 +1,6 @@
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { render, screen, act, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, Mock, vi } from "vitest";
 
 import { PomodorosCompleted } from "./PomodorosCompleted";
 
@@ -53,7 +53,7 @@ describe("PauseTimer commponent", () => {
     const numberWorkingSessions = 3;
     let listener = vi.fn();
     global.chrome.storage.onChanged.addListener = (eventListener) => {
-      listener = eventListener;
+      listener = eventListener as Mock;
     };
     const sut = new Sut();
     act(() => {

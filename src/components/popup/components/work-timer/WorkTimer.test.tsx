@@ -172,7 +172,7 @@ describe("WorkTimer component", () => {
           });
           let listener = vi.fn();
           global.chrome.storage.onChanged.addListener = (eventListener) => {
-            listener = eventListener;
+            listener = eventListener as Mock;
           };
           const sut = new Sut();
           await waitFor(() => {});
@@ -194,7 +194,7 @@ describe("WorkTimer component", () => {
           });
           let listener = vi.fn();
           global.chrome.storage.onChanged.addListener = (eventListener) => {
-            listener = eventListener;
+            listener = eventListener as Mock;
           };
           const sut = new Sut();
           await waitFor(() => {});
@@ -321,7 +321,7 @@ describe("WorkTimer component", () => {
       it("should not disable actions when the 'timerState' is 'IDLE'", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         await waitFor(() => {});
@@ -341,7 +341,7 @@ describe("WorkTimer component", () => {
       it("should disable the 'start-button' when the 'timerState' is 'WORKING'", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         await waitFor(() => {});
@@ -361,7 +361,7 @@ describe("WorkTimer component", () => {
       it("should set the initial timer correctly when the 'timerState' is 'RESET'", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         await waitFor(() => {});
@@ -381,7 +381,7 @@ describe("WorkTimer component", () => {
       it("should set the initial timer correctly when the 'timerState' is 'FINISHED'", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         await waitFor(() => {});
@@ -401,7 +401,7 @@ describe("WorkTimer component", () => {
       it("should set the initial timer correctly when the 'timerState' is 'SHORT_PAUSE'", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         await waitFor(() => {});
@@ -421,7 +421,7 @@ describe("WorkTimer component", () => {
       it("should set the initial timer correctly when the 'timerState' is 'LONG_PAUSE'", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         await waitFor(() => {});

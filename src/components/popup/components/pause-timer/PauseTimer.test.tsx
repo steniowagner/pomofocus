@@ -54,7 +54,7 @@ describe("PauseTimer commponent", () => {
       it("should not render when the Timer-state is not a PAUSE state", () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         act(() => {
@@ -128,7 +128,7 @@ describe("PauseTimer commponent", () => {
       it("should render correctly when the Timer-state is SHORT_PAUSE", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         global.chrome.storage.local.get = vi
@@ -157,7 +157,7 @@ describe("PauseTimer commponent", () => {
       it("should render correctly when the Timer-state is LONG_PAUSE", async () => {
         let listener = vi.fn();
         global.chrome.storage.onChanged.addListener = (eventListener) => {
-          listener = eventListener;
+          listener = eventListener as Mock;
         };
         const sut = new Sut();
         global.chrome.storage.local.get = vi
@@ -189,7 +189,7 @@ describe("PauseTimer commponent", () => {
     it("should send the 'START_PAUSE_TIMER' when the 'timerState' changes to 'FINISHED'", () => {
       let listener = vi.fn();
       global.chrome.storage.onChanged.addListener = (eventListener) => {
-        listener = eventListener;
+        listener = eventListener as Mock;
       };
       new Sut();
       act(() => {
@@ -263,7 +263,7 @@ describe("PauseTimer commponent", () => {
           });
           let listener = vi.fn();
           global.chrome.storage.onChanged.addListener = (eventListener) => {
-            listener = eventListener;
+            listener = eventListener as Mock;
           };
           const sut = new Sut();
           global.chrome.storage.local.get = vi
@@ -340,7 +340,7 @@ describe("PauseTimer commponent", () => {
     it("should unmount the component when the pause is started by storage-change event and finished", async () => {
       let listener = vi.fn();
       global.chrome.storage.onChanged.addListener = (eventListener) => {
-        listener = eventListener;
+        listener = eventListener as Mock;
       };
       const sut = new Sut();
       global.chrome.storage.local.get = vi

@@ -7,7 +7,7 @@ export const WorkTimer = () => {
   const workTimer = useWorkTimer();
 
   return (
-    <div className="flex flex-col">
+    <div data-testid="work-timer" className="flex flex-col">
       <h1
         data-testid="work-timer-time-left"
         className="text-3xl w-auto self-center font-bold text-accent-foreground"
