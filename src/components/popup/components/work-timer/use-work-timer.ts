@@ -80,7 +80,7 @@ export const useWorkTimer = () => {
         "timerState",
       ]);
       disableActions(timers.timerState);
-      if (timers.timerState === "IDLE") {
+      if (timers.timerState === "IDLE" || timers.timerState === "RESET") {
         countdown.setTimeLeft(timers.workingDuration);
       }
       if (timers.timerState === "WORKING") {
