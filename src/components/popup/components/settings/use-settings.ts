@@ -26,9 +26,13 @@ export const useSettings = (props: UseSettingsProps) => {
 
   const saveSettings = useCallback(async () => {
     await Promise.all(
-      Object.keys(settings).map((setting) =>
-        storage.set(setting as StorageKey, settings[setting as keyof Settings])
-      )
+      Object.keys(settings).map((setting) => {
+        let value = settings[setting as keyof Settings];
+        if (setting !== "numberWorkingSessions") {
+          value *= 60;
+        }
+        return storage.set(setting as StorageKey, value);
+      })
     );
     props.onSaveSettings();
   }, [settings, storage, props]);
@@ -48,6 +52,9 @@ export const useSettings = (props: UseSettingsProps) => {
         "shortPauseDuration",
         "longPauseDuration",
       ]);
+      settingsFromStorage.workingDuration /= 60;
+      settingsFromStorage.shortPauseDuration /= 60;
+      settingsFromStorage.longPauseDuration /= 60;
       setSettings(settingsFromStorage);
     };
     handleSetSettingsFromStorage();

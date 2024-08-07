@@ -3,10 +3,10 @@
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({
     timerState: "IDLE",
-    workingDuration: 2,
-    pauseDuration: 5,
-    shortPauseDuration: 5,
-    longPauseDuration: 10,
+    workingDuration: 60 * 2,
+    pauseDuration: 60 * 5,
+    shortPauseDuration: 60 * 5,
+    longPauseDuration: 60 * 10,
     currentWorkingSession: 1,
     numberWorkingSessions: 3,
     theme: "light",

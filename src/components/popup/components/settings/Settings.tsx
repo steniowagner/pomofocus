@@ -31,7 +31,7 @@ export const Settings = (props: SettingsProps) => {
             min={1}
           />
           <Input
-            label="Work duration"
+            label="Work duration (minutes)"
             placeholder="Work duration in minutes"
             value={settings.workingDuration}
             onChange={(e) =>
@@ -42,7 +42,7 @@ export const Settings = (props: SettingsProps) => {
             max={constants.values.timer.maxValue}
           />
           <Input
-            label="Short pause"
+            label="Short pause (minutes)"
             placeholder="Short pause in minutes"
             value={settings.shortPauseDuration}
             onChange={(e) =>
@@ -53,7 +53,7 @@ export const Settings = (props: SettingsProps) => {
             max={constants.values.timer.maxValue}
           />
           <Input
-            label="Long pause"
+            label="Long pause (minutes)"
             placeholder="Long pause in minutes"
             value={settings.longPauseDuration}
             onChange={(e) =>
