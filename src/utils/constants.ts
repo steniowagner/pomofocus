@@ -23,8 +23,8 @@ export const values = {
   timer: {
     maxValue: 60 * 24, // onde day,
     numberWorkingSessions: 3,
-    workingDuration: 25,
-    shortPauseDuration: 5,
-    longPauseDuration: 10,
+    workingDuration: 25 * 60,
+    shortPauseDuration: 5 * 60,
+    longPauseDuration: 10 * 60,
   },
 };

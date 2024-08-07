@@ -1,22 +1,20 @@
 import "@testing-library/jest-dom";
-
 import { vi } from "vitest";
+
+import { constants } from "../utils";
+
+export const defaultStorage = {
+  ...constants.values.timer,
+  timerState: "IDLE",
+  pauseDuration: 3 * 60,
+  currentWorkingSession: 1,
+  theme: "light",
+};
 
 const storage = {
   local: {
-    get: vi.fn((_keys, callback) =>
-      callback({
-        timerState: "IDLE",
-        workingDuration: 3,
-        pauseDuration: 3,
-        shortPauseDuration: 3,
-        longPauseDuration: 5,
-        currentWorkingSession: 1,
-        numberWorkingSessions: 3,
-        theme: "light",
-      })
-    ),
-    set: vi.fn((_items, callback) => callback()),
+    get: vi.fn((_keys, callback) => callback(defaultStorage)),
+    set: vi.fn(),
   },
   onChanged: {
     addListener: vi.fn(),

@@ -3,7 +3,7 @@ import { constants } from "../../../../utils";
 import { useSettings } from "./use-settings";
 import { useThemeProvider } from "../../../../contexts";
 
-type SettingsProps = {
+export type SettingsProps = {
   onSaveSettings: () => void;
 };
 
@@ -18,11 +18,16 @@ export const Settings = (props: SettingsProps) => {
         <div className="flex flex-col gap-y-4 text-sm">
           <div className="flex justify-between items-center pt-2">
             <InputLabel>Dark theme</InputLabel>
-            <Switch checked={theme.isDarkTheme} onToggle={theme.toggleTheme} />
+            <Switch
+              testId="settings-theme-switch"
+              checked={theme.isDarkTheme}
+              onToggle={theme.toggleTheme}
+            />
           </div>
           <Input
             label="Working sessions"
             placeholder="How many working sessions?"
+            data-testid="settings-working-sessions-input"
             value={settings.numberWorkingSessions}
             onChange={(e) =>
               settings.onChangeSettings("numberWorkingSessions", e.target.value)
@@ -33,6 +38,7 @@ export const Settings = (props: SettingsProps) => {
           <Input
             label="Work duration (minutes)"
             placeholder="Work duration in minutes"
+            data-testid="settings-working-duration-input"
             value={settings.workingDuration}
             onChange={(e) =>
               settings.onChangeSettings("workingDuration", e.target.value)
@@ -44,6 +50,7 @@ export const Settings = (props: SettingsProps) => {
           <Input
             label="Short pause (minutes)"
             placeholder="Short pause in minutes"
+            data-testid="settings-short-pause-input"
             value={settings.shortPauseDuration}
             onChange={(e) =>
               settings.onChangeSettings("shortPauseDuration", e.target.value)
@@ -55,6 +62,7 @@ export const Settings = (props: SettingsProps) => {
           <Input
             label="Long pause (minutes)"
             placeholder="Long pause in minutes"
+            data-testid="settings-long-pause-input"
             value={settings.longPauseDuration}
             onChange={(e) =>
               settings.onChangeSettings("longPauseDuration", e.target.value)
@@ -70,10 +78,16 @@ export const Settings = (props: SettingsProps) => {
           onClick={settings.onClickSaveSettings}
           size="sm"
           variant="primary"
+          data-testid="settings-save-button"
         >
           Save
         </Button>
-        <Button onClick={props.onSaveSettings} size="sm" variant="secondary">
+        <Button
+          onClick={props.onSaveSettings}
+          size="sm"
+          variant="secondary"
+          data-testid="settings-cancel-button"
+        >
           Cancel
         </Button>
       </div>
