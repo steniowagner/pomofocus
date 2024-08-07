@@ -1,7 +1,7 @@
 // import { useEffect, useState } from "react";
 
 import { useState } from "react";
-import { Button, Input, Switch, Popup } from "./components";
+import { Button, Input, Switch } from "./components";
 import { CompassIcon } from "lucide-react";
 
 // import { PauseTimer, WorkTimer, Button } from "./components";
@@ -14,7 +14,23 @@ export const App = () => {
   const [b, setB] = useState(false);
   const [l, setL] = useState(false);
 
-  return <Popup />;
+  return (
+    <div className="dark">
+      <div className="w-screen h-screen bg-background">
+        <Button variant="primary" className="ml-24 mt-24">
+          qwe
+        </Button>
+
+        <Input
+          className="mt-44"
+          label="Short pause (minutes)"
+          placeholder="Short pause in minutes"
+          onChange={(e) => {}}
+        />
+        <Switch className="ml-44" checked onToggle={() => {}} />
+      </div>
+    </div>
+  );
   // const [timerState, setTimerState] = useState<TimerState>();
   // const [currentWorkingSession, setCurrentWorkingSession] = useState<number>();
   // const [numberWorkingSessions, setNumberWorkingSessions] = useState<number>();

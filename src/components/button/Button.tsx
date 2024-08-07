@@ -1,6 +1,4 @@
-import { useMemo } from "react";
-
-// import { cn } from "../../utils";
+import { cn } from "../../utils";
 
 type Variant = "primary" | "secondary" | "ghost";
 
@@ -21,20 +19,21 @@ const sizes: Record<Size, string> = {
 };
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  className?: string;
   variant?: Variant;
   size?: Size;
 };
 
 export const Button = (props: ButtonProps) => {
-  const className = useMemo(() => {
-    return `${props.className ?? ""} ${sizes[props.size ?? "default"]} ${
-      variants[props.variant ?? "primary"]
-    } inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50`;
-  }, [props]);
-
   return (
-    <button className={className} {...props}>
+    <button
+      {...props}
+      className={cn(
+        "flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+        sizes[props.size ?? "default"],
+        variants[props.variant ?? "primary"],
+        props.className
+      )}
+    >
       {props.children}
     </button>
   );

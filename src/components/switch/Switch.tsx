@@ -1,10 +1,15 @@
+import { cn } from "../../utils";
+
 type SwitchProps = {
   onToggle: () => void;
   checked: boolean;
+  className?: string;
 };
 
 export const Switch = (props: SwitchProps) => (
-  <label className="inline-flex items-center cursor-pointer">
+  <label
+    className={cn("inline-flex items-center cursor-pointer", props.className)}
+  >
     <input
       type="checkbox"
       value=""
