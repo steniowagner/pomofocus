@@ -34,6 +34,20 @@ class Sut {
 }
 
 describe("Popup component", () => {
+  describe("Calling 'events.openPoup'", () => {
+    it("should set the popup as 'open'", async () => {
+      const set = vi.fn();
+      global.chrome.storage.local.set = set;
+      const sut = new Sut();
+      await waitFor(() => {
+        expect(sut.components.popup).toBeInTheDocument();
+      });
+      expect(chrome.runtime.connect).toHaveBeenCalledOnce();
+      expect(set).toHaveBeenCalled();
+      expect(set).toHaveBeenCalledWith({ isPopupOpen: true });
+    });
+  });
+
   describe("UI", () => {
     it("should render the default UI correctly", async () => {
       const sut = new Sut();
